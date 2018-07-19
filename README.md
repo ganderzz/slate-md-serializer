@@ -1,6 +1,6 @@
 ## Slate to Markdown Serializer
 
-Currently only supports 
+Currently supports 
 - Bold
 - Italic
 - Headers

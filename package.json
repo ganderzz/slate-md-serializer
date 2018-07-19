@@ -5,7 +5,37 @@
   "repository": "git@github.com:ganderzz/slate-md-serializer.git",
   "author": "ganderzz <stolen3@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
     "slate": "^0.34.5"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.4.1"
+  },
+  "jest": {
+    "testMatch": [
+      "**/?(*.)+(spec|test).(j|t)s?(x)"
+    ],
+    "transform": {
+      "^.+\\.js?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx"
+    ],
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "dist"
+    ]
   }
 }

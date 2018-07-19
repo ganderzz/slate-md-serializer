@@ -1,10 +1,20 @@
 import { Block } from "slate";
 
-export function serialize(value, options) {
-  return serializeNode(value.document);
+export function serialize(value, opts = {}) {
+  const options = {
+    ...opts,
+    types: {
+      header: "header",
+      bold: "bold",
+      italic: "italic",
+      ...(opts.types || {})
+    }
+  };
+
+  return serializeNode(value.document, options);
 }
 
-function serializeMarks(node) {
+function serializeMarks(node, options) {
   return node.leaves.map(p => {
     const text = p.text;
 
@@ -12,49 +22,42 @@ function serializeMarks(node) {
       return text;
     }
 
-    return p.marks.toArray().reduce((j, t) => getMarkMarkdown(t.type, j), text);
+    return p.marks.toArray().reduce((j, t) => getMarkMarkdown(t.type, j, options), text);
   }).join("");
 }
 
-function getMarkMarkdown(type, text) {
+function getMarkMarkdown(type, text, { types }) {
   switch (type) {
-    case "bold":
+    case types.bold:
       return `**${text}**`;
 
-    case "italic":
+    case types.italic:
       return `*${text}*`;
   }
 
   return text;
 }
 
-function getBlockText(node) {
+function getBlockText(node, options) {
   if (node.nodes.count() > 0) {
-    return node.nodes.map(serializeMarks).join("");
+    return node.nodes.map(p => serializeMarks(p, options)).join("");
   }
 
   return node.text;
 }
 
-/**
- * Serialize a `node` to plain text.
- *
- * @param {Node} node
- * @return {String}
- */
-
-function serializeNode(node) {
+function serializeNode(node, options) {
   if (
     node.object == "document" ||
     (node.object == "block" && Block.isBlockList(node.nodes))
   ) {
-    return node.nodes.map(serializeNode).join("\n");
+    return node.nodes.map(p => serializeNode(p, options)).join("\n");
   }
 
-  const text = getBlockText(node);
+  const text = getBlockText(node, options);
 
   switch (node.type) {
-    case "header":
+    case options.types.header:
       return `# ${text}`;
   }
 
