@@ -1,0 +1,11 @@
+{
+  "name": "slate-md-serializer",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "repository": "git@github.com:ganderzz/slate-md-serializer.git",
+  "author": "ganderzz <stolen3@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "slate": "^0.34.5"
+  }
+}
