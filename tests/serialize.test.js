@@ -23,7 +23,13 @@ describe("Test serializing", () => {
     value.document.nodes[0].type = "h1";
 
     const output = serialize(Value.fromJSON(value), {
-      types: { header: "h1" }
+      parseNodes: (type, text) => {
+        if (type === "h1") {
+          return `# ${text}`;
+        }
+
+        return text;
+      }
     });
 
     expect(output).toBe("# Enter text here!");

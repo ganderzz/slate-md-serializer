@@ -1,24 +1,27 @@
 {
   "name": "slate-md-serializer",
   "version": "1.0.0",
-  "main": "./src/index.js",
+  "main": "./dist/slate-md-serializer.js",
+  "module": "./dist/slate-md-serializer.js",
   "repository": "git@github.com:ganderzz/slate-md-serializer.git",
   "author": "ganderzz <stolen3@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rollup -c",
+    "release": "yarn build && npm publish"
   },
   "dependencies": {
-    "slate": "^0.34.5"
-  },
-  "peerDependencies": {
+    "slate": "^0.34.5",
     "immutable": "^3.8.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.4.1"
+    "jest": "^23.4.1",
+    "rollup": "^0.63.2",
+    "rollup-plugin-terser": "^1.0.1"
   },
   "jest": {
     "testMatch": [

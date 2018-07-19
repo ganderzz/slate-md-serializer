@@ -1,20 +1,37 @@
 import { Block } from "slate";
 
+if (!Block) {
+  console.warn("slate-md-parser requires Slate to work correctly.");
+}
+
 export function serialize(value, opts = {}) {
   const options = {
+    parseMarks: (type, text) => {
+      switch (type) {
+        case "bold":
+          return `**${text}**`;
+    
+        case "italic":
+          return `*${text}*`;
+      }
+    
+      return text;
+    },
+    parseNodes: (type, text) => {
+      switch (type) {
+        case "header":
+          return `# ${text}`;
+      }
+
+      return text;
+    },
     ...opts,
-    types: {
-      header: "header",
-      bold: "bold",
-      italic: "italic",
-      ...(opts.types || {})
-    }
   };
 
   return serializeNode(value.document, options);
 }
 
-function serializeMarks(node, options) {
+function serializeMarks(node, { parseMarks }) {
   return node.leaves.map(p => {
     const text = p.text;
 
@@ -22,20 +39,8 @@ function serializeMarks(node, options) {
       return text;
     }
 
-    return p.marks.toArray().reduce((j, t) => getMarkMarkdown(t.type, j, options), text);
+    return p.marks.toArray().reduce((j, t) => parseMarks(t.type, j), text);
   }).join("");
-}
-
-function getMarkMarkdown(type, text, { types }) {
-  switch (type) {
-    case types.bold:
-      return `**${text}**`;
-
-    case types.italic:
-      return `*${text}*`;
-  }
-
-  return text;
 }
 
 function getBlockText(node, options) {
@@ -54,12 +59,7 @@ function serializeNode(node, options) {
     return node.nodes.map(p => serializeNode(p, options)).join("\n");
   }
 
-  const text = getBlockText(node, options);
+  const text = getBlockText(node, options); 
 
-  switch (node.type) {
-    case options.types.header:
-      return `# ${text}`;
-  }
-
-  return text;
+  return options.parseNodes(node.type, text);
 }

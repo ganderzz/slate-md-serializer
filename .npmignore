@@ -1,0 +1,8 @@
+node_modules
+*.log
+*.tgz
+package
+tests
+src
+rollup.config.js
+yarn.lock
