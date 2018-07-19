@@ -11,14 +11,14 @@ Currently supports
 **Basic**
 
 ```js
-import { serialize } from "slate-ms-serializer";
+import { serialize } from "slate-md-serializer";
 
 const markdown = serialize(mySlateValue);
 ```
 
 **Adding custom options**
 ```js
-import { serialize } from "slate-ms-serializer";
+import { serialize } from "slate-md-serializer";
 
 const markdown = serialize(mySlateValue, {
   parseMark: (type, text) => {
